@@ -1,11 +1,12 @@
-# Kubernetes Cluster Autoscaler for Liqo
+# Kubernetes Multi-Provider Cluster Autoscaler
 
 The Kubernetes [Cluster Autoscaler project](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) implements a scaling mechanism that adapts the **size** of the cluster to the current computing demand.
 For instance, when the current cluster does not have enough resources to schedule a new pod, it adds a new node to the cluster (_scale out_), and viceversa for _scale in_ operations (the cluster has an excess of resources so that an existing node can be released).
 This allows a better control on cost, particularly on public cloud providers.
 
-This repository contains the required components to allow this mechanism to work with Liqo.
-In a nutshell, when a cluster detects a scarsity of resources, it can acquire some more resources from another (remote) cluster, using Liqo, which adds a new (virtual) node to the origin cluster.
+This project extends the previous architecture to operate in a **multi-cluster scenario**, leveraging Liqo.
+When the cluster autoscaler detects a scarsity of resources, it can acquire new resources in another (remote) cluster, hence enabling unprecedented optimization options in cluster management.
+Technically, Liqo adds a new (virtual) node to the origin cluster, hence providing full compatibility with the current approach.
 
 <img src="./images/las-scaleup.png" alt="POC architecture" width="600"/>
 
@@ -23,8 +24,14 @@ Given the current behavior of the Cluster Autoscaler (CA) mechanism, the main st
 Currently, due to the PoC nature of this project, the _peering establishment_ and the amount of _resources acquired_ are statically defined.
 Future extensions will allow this project to decide _which_ cluster ask resources to (e.g., based on economic cost), and _how many_ resources have to be acquired.
 
+## Reference
 
-## Overview 
+This work has been published in the following scientific paper:
+
+Stefano Galantino, Riccardo Medina, Attilio Oliva, Fulvio Risso, and Giovanni Frattini. 2025. Dynamic Multi-Provider Cluster Autoscaling For The Computing Continuum. In Proceedings of the 3rd International Workshop on Middleware for the Computing Continuum (Mid4CC '25). Association for Computing Machinery, New York, NY, USA, 1–6. [https://doi.org/10.1145/3774898.3778037](https://doi.org/10.1145/3774898.3778037).
+
+
+## Repository overview 
 This repository consists of 3 main components: the gRPC server, the node manager and the discovery server.
 
 A new provider can be integrated with the Cluster Autoscaler (CA) in two distinct ways:
